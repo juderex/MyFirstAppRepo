@@ -1,0 +1,325 @@
+openapi: 3.0.1
+info:
+  title: MandG-GraphAPI
+  version: v1
+paths:
+  /Calendar/CreateEvent:
+    post:
+      tags:
+        - Calendar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRequestModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRequestModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRequestModel'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+  /Calendar/CreateEventInMultipleLocations:
+    post:
+      tags:
+        - Calendar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventMultiLocRequestModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventMultiLocRequestModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateEventMultiLocRequestModel'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+  /Calendar/CreateRecurringEvent:
+    post:
+      tags:
+        - Calendar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRecurrentRequestModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRecurrentRequestModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreateEventRecurrentRequestModel'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/CalendarResponse'
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        countryOrRegion:
+          type: string
+          nullable: true
+        postalCode:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Attendee:
+      type: object
+      properties:
+        emailAddress:
+          $ref: '#/components/schemas/EmailAddress'
+        type:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Body:
+      type: object
+      properties:
+        contentType:
+          type: string
+          nullable: true
+        content:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CalendarResponse:
+      type: object
+      properties:
+        value:
+          type: array
+          items:
+            $ref: '#/components/schemas/value'
+          nullable: true
+      additionalProperties: false
+    Coordinates:
+      type: object
+      properties:
+        latitude:
+          type: string
+          nullable: true
+        longitude:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CreateEventMultiLocRequestModel:
+      type: object
+      properties:
+        subject:
+          type: string
+          nullable: true
+        body:
+          $ref: '#/components/schemas/Body'
+        start:
+          $ref: '#/components/schemas/Start'
+        end:
+          $ref: '#/components/schemas/End'
+        location:
+          $ref: '#/components/schemas/Location'
+        locations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Locations'
+          nullable: true
+        attendees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendee'
+          nullable: true
+        allowNewTimeProposals:
+          type: boolean
+      additionalProperties: false
+    CreateEventRecurrentRequestModel:
+      type: object
+      properties:
+        subject:
+          type: string
+          nullable: true
+        body:
+          $ref: '#/components/schemas/Body'
+        start:
+          $ref: '#/components/schemas/Start'
+        end:
+          $ref: '#/components/schemas/End'
+        recurrence:
+          $ref: '#/components/schemas/Recurrence'
+        location:
+          $ref: '#/components/schemas/Location'
+        attendees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendee'
+          nullable: true
+        allowNewTimeProposals:
+          type: boolean
+      additionalProperties: false
+    CreateEventRequestModel:
+      type: object
+      properties:
+        subject:
+          type: string
+          nullable: true
+        body:
+          $ref: '#/components/schemas/Body'
+        start:
+          $ref: '#/components/schemas/Start'
+        end:
+          $ref: '#/components/schemas/End'
+        location:
+          $ref: '#/components/schemas/Location'
+        attendees:
+          type: array
+          items:
+            $ref: '#/components/schemas/Attendee'
+          nullable: true
+        allowNewTimeProposals:
+          type: boolean
+        transactionId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    EmailAddress:
+      type: object
+      properties:
+        address:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    End:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Location:
+      type: object
+      properties:
+        displayName:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Locations:
+      type: object
+      properties:
+        displayName:
+          type: string
+          nullable: true
+        address:
+          $ref: '#/components/schemas/Address'
+        coordinates:
+          $ref: '#/components/schemas/Coordinates'
+      additionalProperties: false
+    Pattern:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        interval:
+          type: integer
+          format: int32
+        daysOfWeek:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
+    Range:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+      additionalProperties: false
+    Recurrence:
+      type: object
+      properties:
+        pattern:
+          $ref: '#/components/schemas/Pattern'
+        range:
+          $ref: '#/components/schemas/Range'
+      additionalProperties: false
+    Start:
+      type: object
+      properties:
+        dateTime:
+          type: string
+          format: date-time
+        timeZone:
+          type: string
+          nullable: true
+      additionalProperties: false
+    value:
+      type: object
+      properties:
+        displayName:
+          type: string
+          nullable: true
+        id:
+          type: string
+          nullable: true
+      additionalProperties: false
+  securitySchemes:
+    basic:
+      type: http
+      description: Basic Authorization header using the Bearer scheme.
+      scheme: basic
+security:
+  - basic: []
